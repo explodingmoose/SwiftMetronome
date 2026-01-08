@@ -13,21 +13,21 @@ public class TickCountingTimer {
     // MARK: public members
     public var tickEventCallback: ((_ type: TickEventType) -> Void)?
     public var isRunning: Bool = false
-    public var timeSignature: TimeSignature = .commonTime
-    public var subdivision: Subdivision = .one
+    public var currentMeter: Int = 4 // The number of beats per bar
+//    public var subdivision: Subdivision = .one
     public var tempoBPM: Double = 120 { didSet { throttledUpdater?.update() } }
     public var currentTick: UInt32 = 0
     public var currentBeat: Int = 0
+    
+    public var hypermeterManager = HypermeterManager()
+    public var currentMeasure: Int = 1
     
     // MARK: private members
     private let ticksPerHit: UInt32 = 24 // sets resolution - more reliable when as as low as possible
     private var throttledUpdater: ThrottledUpdater? // throttles bpm updates
     private var timer: DispatchSourceTimer?
     private let queue = DispatchQueue(label: "com.SpatialTuner.clockTimer", attributes: .concurrent)
-    private var ticksPerSubdivision: UInt32 {
-        ticksPerHit / subdivision.divisionsPerBeat
-    }
-    
+ 
     public init() {
         createTimer()
         throttledUpdater = ThrottledUpdater(interval: 0.05) {
@@ -80,33 +80,47 @@ public class TickCountingTimer {
     func tick() {
         currentTick += 1
         
-        // check if we've got a subdivision hit
-        if currentTick % ticksPerSubdivision == 0 && currentTick % ticksPerHit != 0 {
-            tickEventCallback?(.subdivision)
-        }
-
         // check if we've got a beat at this location
         var currentHit = currentBeat
         if currentTick % ticksPerHit == 0 {
             currentHit += 1
 
-            if currentHit % timeSignature.numerator == 0 { // restart at primary
+            if currentHit % currentMeter == 0 { // restart at primary
                 currentTick = 0
-                tickEventCallback?(.primary)
+                tickEventCallback?(hypermeterManager.hyperArray[currentMeasure-1][currentHit])
                 DispatchQueue.main.async {
                     self.currentBeat = 0
                 }
             } else { // secondary beat
-                tickEventCallback?(.secondary)
+                tickEventCallback?(hypermeterManager.hyperArray[currentMeasure-1][currentHit])
                 DispatchQueue.main.async {
                     self.currentBeat = currentHit
                 }
             }
         }
     }
+    
+    func nextBar() {
+        if currentMeasure < hypermeterManager.tempoArray.count {
+            currentMeasure += 1
+            currentMeter = hypermeterManager.hyperArray[currentMeasure].count
+            currentBeat = 0
+            tempoBPM = hypermeterManager.tempoArray[currentMeasure]
+        }
+    }
+    
+    func previousBar() {
+        if currentMeasure > 1 {
+            currentMeasure -= 1
+            currentMeter = hypermeterManager.hyperArray[currentMeasure].count
+            currentBeat = 0
+            tempoBPM = hypermeterManager.tempoArray[currentMeasure]
+        }
+    }
+    
 }
 
 // MARK: TickEventType
 public enum TickEventType {
-    case primary, secondary, subdivision
+    case primary, secondary, tertiary, silent
 }

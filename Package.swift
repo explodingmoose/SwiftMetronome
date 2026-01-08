@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftMetronome",
-    platforms: [.visionOS(.v1)],
+    platforms: [.iOS(.v17)],
     products: [
         .library(
             name: "SwiftMetronome",

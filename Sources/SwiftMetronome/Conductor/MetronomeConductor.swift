@@ -104,6 +104,8 @@ public extension MetronomeConductor {
         outputMixer.volume = boostType.mixerOutputVolume
         MetronomeUserDefaultsManager.setMetronomeBoostType(boostType)
     }
+    
+    
 }
 
 // MARK: Private Methods
@@ -123,7 +125,6 @@ extension MetronomeConductor {
     func configureAudioSession() {
         do {
             let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setIntendedSpatialExperience(.bypassed)
             try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
             try audioSession.setActive(true)
         } catch {
@@ -156,8 +157,10 @@ extension MetronomeConductor {
             primaryHitSampler.play(noteNumber: 60, velocity: soundType.velocity)
         case .secondary:
             secondaryHitSampler.play(noteNumber: 60, velocity: soundType.velocity)
-        case .subdivision:
+        case .tertiary:
             secondaryHitSampler.play(noteNumber: 60, velocity: soundType.velocity-subHitDifference)
+        case .silent:
+            return
         }
     }
     
