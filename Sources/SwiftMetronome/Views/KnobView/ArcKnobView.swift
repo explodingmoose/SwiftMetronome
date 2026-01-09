@@ -1,6 +1,6 @@
 //
 //  ArcKnobView.swift
-//  
+//
 //
 //  Created by Matt Pfeiffer on 3/29/24.
 //
@@ -82,7 +82,7 @@ struct ArcKnobView: View {
     }
 }
 
-#Preview("ArcKnobView", windowStyle: .automatic, traits: .fixedLayout(width: 300, height: 300)) {
+#Preview {
     StatefulPreviewWrapper(150) { value in
         ArcKnobView(tempo: value)
     }

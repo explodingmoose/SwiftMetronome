@@ -136,7 +136,7 @@ public struct MetronomeSettingsView: View {
     }
 }
 
-#Preview(traits: .fixedLayout(width: 300, height: 300)) {
+#Preview {
     StatefulPreviewWrapper(MetronomeSound.defaultClick) { value in
         StatefulPreviewWrapper(BoostType.normal) { boost in
             MetronomeSettingsView(soundType: value, boostType: boost)

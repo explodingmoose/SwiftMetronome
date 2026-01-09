@@ -118,7 +118,7 @@ struct KnobView: View {
     }
 }
 
-#Preview("DragKnobView", windowStyle: .automatic, traits: .fixedLayout(width: 300, height: 300)) {
+#Preview {
     StatefulPreviewWrapper(0.5) { value in
         KnobView(value: value)
     }

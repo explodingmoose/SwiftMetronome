@@ -127,7 +127,7 @@ extension MetronomeConductor {
     func configureAudioSession() {
         do {
             let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
+            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.mixWithOthers, .allowBluetoothHFP, .defaultToSpeaker])
             try audioSession.setActive(true)
         } catch {
             Logger?.log(MetronomeEvent.setAudioSessionCategoryError.rawValue,

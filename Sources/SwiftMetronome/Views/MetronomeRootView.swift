@@ -56,6 +56,6 @@ public struct MetronomeRootView: View {
     }
 }
 
-#Preview("MetronomeRootView", traits: .fixedLayout(width: 300, height: 300)) {
+#Preview {
     MetronomeRootView(metronome: MetronomeConductor())
 }

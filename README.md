@@ -6,7 +6,7 @@
 </kbd>
 </p>
 
-This open source Swift Package aims to create a great metronome experience on visionOS.
+This open source Swift Package aims to create a great metronome experience (modified for iOS) to allow for hands-free switching between meters. 
 
 ## Features
 
