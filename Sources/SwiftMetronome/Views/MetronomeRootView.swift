@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Matt Pfeiffer on 3/21/24.
 //
@@ -34,26 +34,20 @@ public struct MetronomeRootView: View {
             }
         }
         .frame(minWidth: 300, maxWidth: 300, minHeight: 300, maxHeight: 300)
-        .ornament(attachmentAnchor: .scene(.topLeading), contentAlignment: .topTrailing) {
-            Button("Settings", systemImage: isShowingSettings ? "clock" : "gearshape.fill") {
-                isShowingSettings.toggle()
-            }
-            .labelStyle(.iconOnly)
-            
-            Button("Play and Pause", systemImage: metronome.clock.isRunning ? "pause.fill" : "play.fill") {
-                print("isRunning value: \(metronome.clock.isRunning)")
-                if !metronome.clock.isRunning {
-                    metronome.resume()
-                } else {
-                    metronome.pause()
-                }
-            }
-            .labelStyle(.iconOnly)
-            .animation(nil, value: metronome.clock.isRunning) // remove icon animation
+        Button("Settings", systemImage: isShowingSettings ? "clock" : "gearshape.fill") {
+            isShowingSettings.toggle()
         }
-        .onDisappear {
-            metronome.pause()
+        .labelStyle(.iconOnly)
+        
+        Button("Play and Pause", systemImage: metronome.clock.isRunning ? "pause.fill" : "play.fill") {
+            print("isRunning value: \(metronome.clock.isRunning)")
+            if !metronome.clock.isRunning {
+                metronome.resume()
+            } else {
+                metronome.pause()
+            }
         }
+        .labelStyle(.iconOnly)
         .alert("Error", isPresented: showErrorAlert) {
             Button("OK", action: {})
         } message: {
@@ -62,6 +56,6 @@ public struct MetronomeRootView: View {
     }
 }
 
-#Preview("MetronomeRootView", windowStyle: .automatic, traits: .fixedLayout(width: 300, height: 300)) {
+#Preview("MetronomeRootView", traits: .fixedLayout(width: 300, height: 300)) {
     MetronomeRootView(metronome: MetronomeConductor())
 }

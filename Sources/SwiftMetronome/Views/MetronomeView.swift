@@ -21,24 +21,7 @@ public struct MetronomeView: View {
     
     public var body: some View {
         ZStack {
-            VStack {
-                HStack {
-                    TimeSignatureMenu(timeSignature: $metronome.clock.timeSignature)
-                        .padding(.leading)
-                        .padding(.top, 15)
-                    
-                    Spacer()
-                    
-                    SubdivisionMenu(subdivision: $metronome.clock.subdivision, timeSignature: metronome.clock.timeSignature)
-                        .padding(.trailing)
-                        .padding(.top, 15)
-                }
-                .padding(.top, 8)
-                .disabled(isTempoLocked)
-                
-                Spacer()
-            }
-            .foregroundStyle(.secondary)
+            
             
             ArcKnobView(tempo: $metronome.clock.tempoBPM)
                 .frame(width: 215, height: 215)
@@ -50,14 +33,14 @@ public struct MetronomeView: View {
             
             CurrentBeatIndicatorCircleGrid(isRunning: metronome.clock.isRunning,
                                            currentBeat: metronome.clock.currentBeat,
-                                           numberOfBeats: metronome.clock.timeSignature.numerator)
+                                           numberOfBeats: metronome.clock.hypermeterManager.hyperArray[metronome.clock.currentMeasure-1].count)
         }
         .padding(.vertical)
     }
-    
+    /*
     struct TimeSignatureMenu: View {
         @Binding var timeSignature: TimeSignature
-
+        
         var body: some View {
             Menu {
                 ForEach(TimeSignature.allCases, id: \.self) { timeSignature in
@@ -105,7 +88,8 @@ public struct MetronomeView: View {
             .buttonStyle(.plain)
         }
     }
-    
+    */
+
     struct CurrentBeatIndicatorCircleGrid: View {
         let isRunning: Bool
         let currentBeat: Int
@@ -119,7 +103,7 @@ public struct MetronomeView: View {
                 Spacer()
                 HStack(spacing: 0) {
                     Spacer(minLength: 0)
-                    let firstRowUpperBound = numberOfBeats > 6 ? 6 : numberOfBeats
+                    let firstRowUpperBound = numberOfBeats > 6 ? 6 : numberOfBeats //allows for a second row for space
                     HStack(spacing: 6) {
                         ForEach(0..<firstRowUpperBound, id: \.self) { index in
                             ZStack {
@@ -174,6 +158,6 @@ public struct MetronomeView: View {
     }
 }
 
-#Preview("Metronome", windowStyle: .automatic, traits: .fixedLayout(width: 300, height: 300)) {
+#Preview {
     MetronomeView(metronome: MetronomeConductor(), isTempoLocked: false)
 }

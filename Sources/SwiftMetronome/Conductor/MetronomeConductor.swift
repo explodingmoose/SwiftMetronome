@@ -12,6 +12,7 @@ import AVFoundation
 @Observable
 public class MetronomeConductor {
     public var clock = TickCountingTimer()
+    
     public var soundType: MetronomeSound = MetronomeUserDefaultsManager.getMetronomeSoundType() {
         didSet { setSoundType(soundType) }
     }
@@ -28,16 +29,17 @@ public class MetronomeConductor {
     private var primaryHitSampler = AppleSampler()
     private var secondaryHitSampler = AppleSampler()
     
+    
     public init(Logger: LogsMetronomeEvents.Type? = nil)  {
         self.Logger = Logger
         engine = AudioEngine()
-        #if !targetEnvironment(simulator)
+//        #if !targetEnvironment(simulator)
         setupAudioChain()
         configureAudioSession()
         outputMixer.volume = boostType.mixerOutputVolume
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleAudioSessionInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
-        #endif
+//        #endif
     }
 }
 
