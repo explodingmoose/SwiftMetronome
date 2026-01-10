@@ -13,7 +13,7 @@ import Foundation
     public var tempoArray: [Double] = [120] //Each bar's tempo
 
     
-    func addBar(meter: Int, measure: Int, tempo: Double) {
+    public func addBar(meter: Int, measure: Int, tempo: Double) {
         hyperArray.insert([TickEventType.primary], at: measure-1) //Add a downbeat of the bar before the given measure number
         for beat in 2...meter {
             hyperArray[measure-1].append(.tertiary) //add the rest of the beats
@@ -21,12 +21,12 @@ import Foundation
         tempoArray.insert(tempo, at: measure-1)
     }
     
-    func deleteBar(measure: Int) {
+    public func deleteBar(measure: Int) {
         hyperArray.remove(at: measure-1)
         tempoArray.remove(at: measure-1)
     }
     
-    func changeTickEventType(currentMeasure: Int, currentBeat: Int) {
+    public func changeTickEventType(currentMeasure: Int, currentBeat: Int) {
         let oldBeat:TickEventType = hyperArray[currentMeasure-1][currentBeat]
         switch oldBeat {
         case .primary:
