@@ -25,4 +25,19 @@ import Foundation
         hyperArray.remove(at: measure-1)
         tempoArray.remove(at: measure-1)
     }
+    
+    public func changeTickEventType(currentMeasure: Int, currentBeat: Int) {
+        let oldBeat:TickEventType = hyperArray[currentMeasure-1][currentBeat]
+        switch oldBeat {
+        case .primary:
+            hyperArray[currentMeasure-1][currentBeat] = .secondary
+        case .secondary:
+            hyperArray[currentMeasure-1][currentBeat] = .tertiary
+        case .tertiary:
+            hyperArray[currentMeasure-1][currentBeat] = .silent
+        case .silent:
+            hyperArray[currentMeasure-1][currentBeat] = .primary
+        }
+    }
+    
 }
