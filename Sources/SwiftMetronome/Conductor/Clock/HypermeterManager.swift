@@ -26,7 +26,7 @@ import Foundation
         tempoArray.remove(at: measure-1)
     }
     
-    public func changeTickEventType(currentMeasure: Int, currentBeat: Int) {
+    func changeTickEventType(currentMeasure: Int, currentBeat: Int) {
         let oldBeat:TickEventType = hyperArray[currentMeasure-1][currentBeat]
         switch oldBeat {
         case .primary:
