@@ -28,6 +28,7 @@ public class MetronomeConductor {
     private var outputMixer: Mixer = Mixer()
     private var primaryHitSampler = AppleSampler()
     private var secondaryHitSampler = AppleSampler()
+    private var tertiaryHitSampler = AppleSampler()
     
     
     public init(Logger: LogsMetronomeEvents.Type? = nil)  {
@@ -115,6 +116,7 @@ extension MetronomeConductor {
     func setupAudioChain() {
         outputMixer.addInput(primaryHitSampler)
         outputMixer.addInput(secondaryHitSampler)
+        outputMixer.addInput(tertiaryHitSampler)
         
         // Set the hit callback to call the playHitSound method
         clock.tickEventCallback = { [weak self] hitType in
@@ -143,16 +145,22 @@ extension MetronomeConductor {
         guard let secondaryHitURL = Bundle.module.url(forResource: soundType.loFile, withExtension: nil)
         else { throw MetronomeError.secondarySoundMissing }
         
+        guard let tertiaryHitURL = Bundle.module.url(forResource: soundType.loFile, withExtension: nil)
+        else { throw MetronomeError.secondarySoundMissing }
+        
         let primaryAudioFile = try AVAudioFile(forReading: primaryHitURL)
         let secondaryAudioFile = try AVAudioFile(forReading: secondaryHitURL)
+        let tertiaryAudioFile = try AVAudioFile(forReading: tertiaryHitURL)
         
         try primaryHitSampler.loadAudioFile(primaryAudioFile)
         try secondaryHitSampler.loadAudioFile(secondaryAudioFile)
+        try tertiaryHitSampler.loadAudioFile(tertiaryAudioFile)
     }
     
     /// Play the hit sound based on the hit type
     func playSoundForClockTickEvent(_ hitType: TickEventType) {
-        let subHitDifference: UInt8 = 37 // subdivision hits are a little quieter version of secondary
+        let tertHitDifference: UInt8 = 37
+        let subHitDifference: UInt8 = 60 // subdivision hits are a little quieter version of secondary
         
         switch hitType {
         case .primary:
@@ -160,9 +168,11 @@ extension MetronomeConductor {
         case .secondary:
             secondaryHitSampler.play(noteNumber: 60, velocity: soundType.velocity)
         case .tertiary:
-            secondaryHitSampler.play(noteNumber: 60, velocity: soundType.velocity-subHitDifference)
+            tertiaryHitSampler.play(noteNumber: 60, velocity: soundType.velocity-tertHitDifference)
         case .silent:
             return
+        case .subdivision:
+            tertiaryHitSampler.play(noteNumber: 60, velocity: soundType.velocity-subHitDifference)
         }
     }
     
@@ -206,7 +216,7 @@ extension MetronomeConductor {
 
 // MARK: MetronomeError
 enum MetronomeError: Error {
-    case primarySoundMissing, secondarySoundMissing
+    case primarySoundMissing, secondarySoundMissing, tertiarySoundMissing
 }
 
 // MARK: BoostType

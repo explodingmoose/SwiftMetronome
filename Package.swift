@@ -12,12 +12,13 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/AudioKit/AudioKit.git", from: "5.0.0"),
-        .package(url: "https://github.com/Matt54/ResizableVector.git", from: "1.0.0")
+        .package(url: "https://github.com/Matt54/ResizableVector.git", from: "1.0.0"),
+        .package(url: "https://github.com/mttfntn/OneFingerRotation", .upToNextMajor(from: "1.0.0")),
     ],
     targets: [
         .target(
             name: "SwiftMetronome",
-            dependencies: ["AudioKit", "ResizableVector"],
+            dependencies: ["AudioKit", "ResizableVector", "OneFingerRotation"],
             resources: [.process("Resources")]
         ),
         .testTarget(

@@ -30,7 +30,7 @@ public struct MetronomeRootView: View {
             if isShowingSettings {
                 MetronomeSettingsView(soundType: $metronome.soundType, boostType: $metronome.boostType)
             } else {
-                MetronomeView(metronome: metronome, isTempoLocked: false)
+                ArcKnobView(tempo: $metronome.clock.tempoBPM, bounds: 15...400, sensitivity: 4)
             }
         }
         .frame(minWidth: 300, maxWidth: 300, minHeight: 300, maxHeight: 300)

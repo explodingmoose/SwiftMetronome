@@ -37,7 +37,7 @@ public struct MetronomeView: View {
         }
         .padding(.vertical)
     }
-    /*
+
     struct TimeSignatureMenu: View {
         @Binding var timeSignature: TimeSignature
         
@@ -88,7 +88,6 @@ public struct MetronomeView: View {
             .buttonStyle(.plain)
         }
     }
-    */
 
     struct CurrentBeatIndicatorCircleGrid: View {
         let isRunning: Bool

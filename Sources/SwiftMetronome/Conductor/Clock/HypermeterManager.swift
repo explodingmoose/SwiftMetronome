@@ -9,13 +9,13 @@ import Foundation
 
 
 @Observable public class HypermeterManager {
-    public var hyperArray: [[TickEventType]] = [[.primary, .tertiary, .tertiary, .tertiary]] //Each bar's rhythm
-    public var tempoArray: [Double] = [120] //Each bar's tempo
+    public var hyperArray: [[TickEventType]] = [[.primary, .tertiary, .tertiary, .tertiary], [.primary, .tertiary, .tertiary]] //Each bar's rhythm
+    public var tempoArray: [Double] = [120, 90] //Each bar's tempo
 
     
     public func addBar(meter: Int, measure: Int, tempo: Double) {
         hyperArray.insert([TickEventType.primary], at: measure-1) //Add a downbeat of the bar before the given measure number
-        for beat in 2...meter {
+        for _ in 2...meter {
             hyperArray[measure-1].append(.tertiary) //add the rest of the beats
         }
         tempoArray.insert(tempo, at: measure-1)
@@ -37,6 +37,8 @@ import Foundation
             hyperArray[currentMeasure-1][currentBeat] = .silent
         case .silent:
             hyperArray[currentMeasure-1][currentBeat] = .primary
+        case .subdivision:
+            return
         }
     }
     

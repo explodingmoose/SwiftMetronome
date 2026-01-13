@@ -1,5 +1,5 @@
 {
-  "originHash" : "3167ab2ba14afe6c5471ea47dca8a45635ce608c46ac47559520d63c35d027ce",
+  "originHash" : "04927e0f32357cad0cd3e8ef95f9dcf32729c48c427cbb8d6bd1d21b119b8e67",
   "pins" : [
     {
       "identity" : "audiokit",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "b2dbaed8cd38077092b6b6e311699ddf5d94dbd7",
         "version" : "5.6.3"
+      }
+    },
+    {
+      "identity" : "onefingerrotation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mttfntn/OneFingerRotation",
+      "state" : {
+        "revision" : "1a1c586f9f58d18bceefed97a0ec49fa732add3e",
+        "version" : "1.2.1"
       }
     },
     {
