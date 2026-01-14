@@ -10,7 +10,7 @@ import SwiftUI
 struct BeatBarIndicatorGrid: View {
     let clock: TickCountingTimer
     var numberOfBeats: Int {
-        clock.hypermeterManager.hyperArray[clock.currentMeasure-1].count
+        clock.hypermeterManager.hyperArray[clock.currentMeasure].count
     }
         
         var body: some View {

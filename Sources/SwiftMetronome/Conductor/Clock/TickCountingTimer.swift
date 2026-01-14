@@ -18,14 +18,14 @@ public class TickCountingTimer {
     public var tempoBPM: Double = 120 {
         didSet {
             throttledUpdater?.update()
-            hypermeterManager.tempoArray[currentMeasure-1] = tempoBPM
+            hypermeterManager.tempoArray[currentMeasure] = tempoBPM
         }
     }
     public var currentTick: UInt32 = 0
     public var currentBeat: Int = 0 //treat as index (starting from 0)
     
     public var hypermeterManager = HypermeterManager()
-    public var currentMeasure: Int = 1 //treat as measure number (starting from 1)
+    public var currentMeasure: Int = 0 //treat as index (starting from 0)
     public var queuedBar: QueuedBars = .none
     
     // MARK: private members
@@ -62,7 +62,7 @@ public class TickCountingTimer {
     func resume() {
         currentBeat = 0
         currentTick = 0
-        tickEventCallback?(hypermeterManager.hyperArray[currentMeasure-1][0])
+        tickEventCallback?(hypermeterManager.hyperArray[currentMeasure][0])
         if !isRunning {
             timer?.resume()
             isRunning = true
@@ -97,15 +97,15 @@ public class TickCountingTimer {
         if currentTick % ticksPerHit == 0 {
             currentHit += 1
             //currentBeat at this point is the number of the previously sounded beat, because beat has yet to be updated.
-            if currentHit % hypermeterManager.hyperArray[currentMeasure-1].count == 0 { // restart at downbeat
+            if currentHit % hypermeterManager.hyperArray[currentMeasure].count == 0 { // restart at downbeat
                 currentTick = 0
-                tickEventCallback?(hypermeterManager.hyperArray[currentMeasure-1][0])
+                tickEventCallback?(hypermeterManager.hyperArray[currentMeasure][0])
                 DispatchQueue.main.async {
                     self.queueBar(self.queuedBar)
                     self.queuedBar = .none
                 }
             } else { // other beats
-                tickEventCallback?(hypermeterManager.hyperArray[currentMeasure-1][currentBeat+1])
+                tickEventCallback?(hypermeterManager.hyperArray[currentMeasure][currentBeat+1])
                 DispatchQueue.main.async {
                     self.currentBeat = currentHit
                 }
@@ -125,18 +125,18 @@ public class TickCountingTimer {
     }
     
     func nextBar() {
-        if self.currentMeasure < self.hypermeterManager.tempoArray.count {
+        if self.currentMeasure < self.hypermeterManager.tempoArray.count - 1 {
             self.currentMeasure += 1
             self.currentBeat = 0
-            self.tempoBPM = self.hypermeterManager.tempoArray[currentMeasure-1]
+            self.tempoBPM = self.hypermeterManager.tempoArray[currentMeasure]
         } else {self.currentBeat = 0}
     }
     
     func previousBar() {
-        if currentMeasure > 1 {
+        if currentMeasure > 0 {
             currentMeasure -= 1
             currentBeat = 0
-            tempoBPM = hypermeterManager.tempoArray[currentMeasure-1]
+            tempoBPM = hypermeterManager.tempoArray[currentMeasure]
         } else {self.currentBeat = 0}
     }
     

@@ -19,7 +19,7 @@ struct BeatBar: View {
     
     var beatBarHeight: Int {
         let beatType = hypermeterManager
-            .hyperArray[currentMeasure-1][index]
+            .hyperArray[currentMeasure][index]
         switch beatType {
         case .primary:
             return 3
@@ -51,5 +51,5 @@ struct BeatBar: View {
 }
 
 #Preview {
-    BeatBar(hypermeterManager: HypermeterManager(), isRunning: false, currentMeasure: 1, currentBeat: 0, index: 0)
+    BeatBar(hypermeterManager: HypermeterManager(), isRunning: false, currentMeasure: 0, currentBeat: 0, index: 0)
 }

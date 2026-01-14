@@ -14,29 +14,29 @@ import Foundation
 
     
     public func addBar(meter: Int, measure: Int, tempo: Double) {
-        hyperArray.insert([TickEventType.primary], at: measure-1) //Add a downbeat of the bar before the given measure number
+        hyperArray.insert([TickEventType.primary], at: measure) //Add a downbeat of the bar before the given measure number
         for _ in 2...meter {
-            hyperArray[measure-1].append(.tertiary) //add the rest of the beats
+            hyperArray[measure].append(.tertiary) //add the rest of the beats
         }
-        tempoArray.insert(tempo, at: measure-1)
+        tempoArray.insert(tempo, at: measure)
     }
     
     public func deleteBar(measure: Int) {
-        hyperArray.remove(at: measure-1)
-        tempoArray.remove(at: measure-1)
+        hyperArray.remove(at: measure)
+        tempoArray.remove(at: measure)
     }
     
     public func changeTickEventType(currentMeasure: Int, currentBeat: Int) {
-        let oldBeat:TickEventType = hyperArray[currentMeasure-1][currentBeat]
+        let oldBeat:TickEventType = hyperArray[currentMeasure][currentBeat]
         switch oldBeat {
         case .primary:
-            hyperArray[currentMeasure-1][currentBeat] = .secondary
+            hyperArray[currentMeasure][currentBeat] = .secondary
         case .secondary:
-            hyperArray[currentMeasure-1][currentBeat] = .tertiary
+            hyperArray[currentMeasure][currentBeat] = .tertiary
         case .tertiary:
-            hyperArray[currentMeasure-1][currentBeat] = .silent
+            hyperArray[currentMeasure][currentBeat] = .silent
         case .silent:
-            hyperArray[currentMeasure-1][currentBeat] = .primary
+            hyperArray[currentMeasure][currentBeat] = .primary
         case .subdivision:
             return
         }
